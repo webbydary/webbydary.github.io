@@ -1,0 +1,71 @@
+// cursor-trail.js
+
+// Создаём элегантный след в стиле дизайн-портфолио
+let trailCount = 0;
+const MAX_TRAILS = 25;
+
+document.addEventListener('mousemove', (e) => {
+    // Создаём элемент следа
+    const trail = document.createElement('div');
+    
+    // Стилизация под ваш бренд (мягкие тона)
+    trail.style.cssText = `
+        position: fixed;
+        left: ${e.clientX - 12}px;
+        top: ${e.clientY - 12}px;
+        width: 24px;
+        height: 24px;
+        background: radial-gradient(circle, rgba(99, 102, 241, 0.6), rgba(139, 92, 246, 0.2));
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9999;
+        transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        opacity: 0;
+        transform: scale(0.2);
+        border: 1px solid rgba(99, 102, 241, 0.2);
+        backdrop-filter: blur(2px);
+    `;
+
+    //
+    trail.style.cssText = `
+    position: fixed;
+    left: ${e.clientX - 3}px;
+    top: ${e.clientY - 3}px;
+    width: 6px;
+    height: 6px;
+    background: #6366f1;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transition: opacity 0.5s ease;
+    opacity: 0.6;
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+`;
+
+//
+    
+    document.body.appendChild(trail);
+    
+    // Анимация появления
+    requestAnimationFrame(() => {
+        trail.style.opacity = '0.8';
+        trail.style.transform = 'scale(1)';
+    });
+    
+    // Удаляем с затуханием
+    setTimeout(() => {
+        trail.style.opacity = '0';
+        trail.style.transform = 'scale(1.5) translateY(-10px)';
+        setTimeout(() => trail.remove(), 800);
+    }, 300);
+    
+    // Ограничиваем количество следов
+    trailCount++;
+    if (trailCount > MAX_TRAILS) {
+        const oldTrail = document.body.querySelector('.trail-effect');
+        if (oldTrail) oldTrail.remove();
+        trailCount = MAX_TRAILS;
+    }
+});
+
+console.log('✅ Cursor trail эффект загружен! Дизайн-портфолио Даши');

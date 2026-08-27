@@ -1,0 +1,156 @@
+// cursor-trail.js — стикеры с нахлестом и редким появлением
+
+// 📸 СПИСОК ВАШИХ СТИКЕРОВ
+const stickers = [
+    'images/stickers/sticker01.png',
+    'images/stickers/sticker02.png',
+    'images/stickers/sticker03.png',
+    'images/stickers/sticker04.png',
+    'images/stickers/sticker05.png',
+    'images/stickers/sticker06.png',
+    'images/stickers/sticker07.png',
+    'images/stickers/sticker08.png',
+    'images/stickers/sticker09.png',
+    'images/stickers/sticker10.png',
+    'images/stickers/sticker11.png',
+    'images/stickers/sticker12.png',
+    'images/stickers/sticker13.png',
+    'images/stickers/sticker14.png',
+    'images/stickers/sticker15.png',
+    'images/stickers/sticker16.png',
+    'images/stickers/sticker17.png',
+    'images/stickers/sticker18.png',
+    'images/stickers/sticker19.png',
+    'images/stickers/sticker20.png',
+    'images/stickers/sticker21.png',
+    'images/stickers/sticker22.png',
+    'images/stickers/sticker23.png',
+    'images/stickers/sticker24.png',
+    'images/stickers/sticker25.png',
+    'images/stickers/sticker26.png',
+    'images/stickers/sticker27.png',
+    'images/stickers/sticker28.png',
+    'images/stickers/sticker29.png',
+    'images/stickers/sticker30.png',
+    'images/stickers/sticker31.png',
+    'images/stickers/sticker32.png',
+    'images/stickers/sticker33.png',
+    'images/stickers/sticker34.png',
+    'images/stickers/sticker35.png',
+    'images/stickers/sticker36.png',
+    'images/stickers/sticker37.png',
+    'images/stickers/sticker38.png',
+    'images/stickers/sticker39.png',
+    'images/stickers/sticker40.png',
+    // Добавьте столько, сколько у вас есть
+];
+
+// Заранее загружаем все изображения
+const loadedImages = [];
+stickers.forEach((src) => {
+    const img = new Image();
+    img.src = src;
+    loadedImages.push(img);
+});
+
+// НАСТРОЙКИ (меняйте здесь)
+const CONFIG = {
+    MAX_TRAILS: 10,           // Максимальное количество стикеров на экране (было 20 → стало 8)
+    STICKER_SIZE: 150,        // Размер стикера в px
+    APPEAR_DELAY: 70,       // Задержка перед появлением (мс) — чем больше, тем реже стикеры
+    FADE_OUT_DELAY: 400,     // Через сколько начинаем исчезать (мс)
+    REMOVE_DELAY: 800,      // Через сколько удаляем (мс)
+    ROTATION_RANGE: 15,      // Диапазон вращения (градусы)
+    SCALE_MIN: 1,          // Минимальный масштаб при появлении
+    SCALE_MAX: 1.8,          // Максимальный масштаб при появлении
+    OPACITY: 1           // Прозрачность стикера
+};
+
+let trailCount = 0;
+let lastMoveTime = 0;
+
+// 🔍 Функция проверки — находится ли курсор в зоне .headblock
+function isInHeadblock(clientX, clientY) {
+    const headblock = document.querySelector('.headblock');
+    if (!headblock) return false;
+    
+    const rect = headblock.getBoundingClientRect();
+    
+    // Проверяем:
+    // - По вертикали: от верха .headblock до его низа
+    // - По горизонтали: на всю ширину экрана (без ограничений)
+    return clientY >= rect.top && clientY <= rect.bottom;
+}
+
+document.addEventListener('mousemove', (e) => {
+
+    
+    // ⛔ Если курсор вне зоны .headblock — ничего не делаем
+    if (!isInHeadblock(e.clientX, e.clientY)) return;
+    // ⏱️ Контроль частоты появления (стикеры появляются реже)
+    const now = Date.now();
+    if (now - lastMoveTime < CONFIG.APPEAR_DELAY) return;
+    lastMoveTime = now;
+    
+    // Выбираем случайный стикер
+    const randomIndex = Math.floor(Math.random() * loadedImages.length);
+    const selectedImage = loadedImages[randomIndex];
+    
+    // Создаём элемент с изображением
+    const trail = document.createElement('img');
+    trail.src = selectedImage.src;
+    
+    // Размер стикера (чуть варьируется для естественности)
+    const size = CONFIG.STICKER_SIZE + (Math.random() * 10 - 5);
+    
+    // Случайный поворот
+    const rotation = (Math.random() - 0.5) * CONFIG.ROTATION_RANGE * 2;
+    const scale = CONFIG.SCALE_MIN + Math.random() * (CONFIG.SCALE_MAX - CONFIG.SCALE_MIN);
+    
+    // Стилизация
+    trail.style.cssText = `
+        position: fixed;
+        left: ${e.clientX - size/2}px;
+        top: ${e.clientY - size/2}px;
+        width: ${size}px;
+        height: ${size}px;
+        pointer-events: none;
+        z-index: 9999;
+        opacity: 0;
+        transform: scale(${scale * 0.3}) rotate(${rotation * 2}deg);
+        transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+        object-fit: contain;
+        filter: drop-shadow(0 4px 12px rgba(0,0,0,0.12));
+    `;
+    
+    document.body.appendChild(trail);
+    
+    // Анимация появления (плавно)
+    requestAnimationFrame(() => {
+        trail.style.opacity = CONFIG.OPACITY;
+        trail.style.transform = `scale(${scale}) rotate(${rotation}deg)`;
+    });
+    
+    // Удаляем с затуханием (медленнее)
+    setTimeout(() => {
+        trail.style.opacity = '0';
+        trail.style.transform = `scale(${scale * 0.4}) rotate(${rotation * 1.5}deg) translateY(-20px)`;
+        setTimeout(() => trail.remove(), CONFIG.REMOVE_DELAY - CONFIG.FADE_OUT_DELAY);
+    }, CONFIG.FADE_OUT_DELAY);
+    
+    // 🔄 Ограничиваем количество стикеров на экране (мягкое удаление старых)
+    trailCount++;
+    if (trailCount > CONFIG.MAX_TRAILS) {
+        const allTrails = document.querySelectorAll('img[style*="fixed"]');
+        if (allTrails.length > CONFIG.MAX_TRAILS) {
+            const oldest = allTrails[0];
+            oldest.style.opacity = '0';
+            oldest.style.transform = 'scale(0.2)';
+            setTimeout(() => oldest.remove(), 400);
+        }
+        trailCount = CONFIG.MAX_TRAILS;
+    }
+});
+
+console.log('✅ Стикеры загружены! Количество:', loadedImages.length);
+console.log('📐 Настройки:', CONFIG);

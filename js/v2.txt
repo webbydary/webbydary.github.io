@@ -1,0 +1,80 @@
+// cursor-trail.js — стикеры по очереди
+
+const stickers = [
+    'images/stickers/sticker01.png',
+    'images/stickers/sticker02.png',
+    'images/stickers/sticker03.png',
+    'images/stickers/sticker04.png',
+    'images/stickers/sticker05.png',
+    'images/stickers/sticker06.png',
+    'images/stickers/sticker07.png',
+    'images/stickers/sticker08.png',
+    'images/stickers/sticker09.png',
+    'images/stickers/sticker10.png',
+    'images/stickers/sticker11.png',
+    'images/stickers/sticker12.png',
+    'images/stickers/sticker13.png',
+    'images/stickers/sticker14.png',
+    'images/stickers/sticker15.png',
+    'images/stickers/sticker16.png',
+    'images/stickers/sticker17.png',
+    'images/stickers/sticker18.png',
+    // Добавьте столько, сколько у вас есть
+];
+
+const loadedImages = [];
+stickers.forEach((src) => {
+    const img = new Image();
+    img.src = src;
+    loadedImages.push(img);
+});
+
+let currentIndex = 0;
+let trailCount = 0;
+const MAX_TRAILS = 8;
+
+document.addEventListener('mousemove', (e) => {
+    // Берём следующий стикер по очереди
+    const selectedImage = loadedImages[currentIndex];
+    currentIndex = (currentIndex + 1) % loadedImages.length;
+    
+    const trail = document.createElement('img');
+    trail.src = selectedImage.src;
+    
+    const size = 150 + Math.random() * 150;
+    trail.style.cssText = `
+        position: fixed;
+        left: ${e.clientX - size/2}px;
+        top: ${e.clientY - size/2}px;
+        width: ${size}px;
+        height: ${size}px;
+        pointer-events: none;
+        z-index: 9999;
+        opacity: 0;
+        transform: scale(0.2) rotate(0deg);
+        transition: all 0.5s ease-out;
+        object-fit: contain;
+    `;
+    
+    document.body.appendChild(trail);
+    
+    requestAnimationFrame(() => {
+        trail.style.opacity = '0.85';
+        trail.style.transform = `scale(1) rotate(${Math.random() * 30 - 15}deg)`;
+    });
+    
+    setTimeout(() => {
+        trail.style.opacity = '0';
+        trail.style.transform = 'scale(0.3) rotate(20deg)';
+        setTimeout(() => trail.remove(), 1200);
+    }, 1500);
+    
+    trailCount++;
+    if (trailCount > MAX_TRAILS) {
+        const old = document.querySelector('.sticker-trail');
+        if (old) old.remove();
+        trailCount = MAX_TRAILS;
+    }
+});
+
+console.log('✅ Стикеры по очереди загружены!');

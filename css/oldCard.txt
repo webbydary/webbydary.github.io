@@ -1,0 +1,100 @@
+/* ===== СЕКЦИЯ КЕЙСЫ ===== */
+.cases {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ===== БОЛЬШАЯ КАРТОЧКА ===== */
+.case-big {
+  width: 100%;
+  background:var(--bg-card);
+  border-radius: 20px;
+  padding: 40px 0px 0 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0px;
+  overflow: hidden;
+}
+
+/* Текстовая часть большой карточки */
+.case-big-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 0px 40px 0 40px;
+  max-width: 900px;
+}
+
+/* Логотип + название */
+.case-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.case-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  border: none;
+  outline: none;
+}
+
+.case-company {
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 28px;
+  color: var(--text-primary);
+}
+
+/* Заголовок */
+.case-title {
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 36px;
+  color: var(--text-primary);
+}
+
+/* Теги */
+.case-tags {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.case-tag {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 24px;
+  color: var(--text-primary);
+  opacity: 0.5;
+}
+
+/* Фото большой карточки */
+.case-big-image {
+  width: 100%;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: none;
+  outline: none;     
+}
+
+.case-big-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border: none;
+  outline: none;
+}
