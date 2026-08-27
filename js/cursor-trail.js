@@ -1,4 +1,4 @@
-// cursor-trail.js — динамическая отрисовка (скорость мыши влияет на частоту)
+// cursor-trail.js — поддержка ПК и мобильных устройств
 
 // 📸 СПИСОК ВАШИХ СТИКЕРОВ
 const stickers = [
@@ -45,7 +45,7 @@ const stickers = [
     // Добавьте столько, сколько у вас есть
 ];
 
-// Заранее загружаем все изображения
+// Загружаем изображения
 const loadedImages = [];
 stickers.forEach((src) => {
     const img = new Image();
@@ -56,79 +56,92 @@ stickers.forEach((src) => {
 // НАСТРОЙКИ
 const CONFIG = {
     MAX_TRAILS: 10,              // Максимальное количество стикеров
-    STICKER_SIZE: 120,            // Размер стикера
-    MIN_APPEAR_DELAY: 10,        // Минимальная задержка (при быстром движении)
-    MAX_APPEAR_DELAY: 50,       // Максимальная задержка (при медленном движении)
-    FADE_OUT_DELAY: 400,         
-    REMOVE_DELAY: 800,          
+    STICKER_SIZE: 40,            // Размер (на мобильных чуть меньше)
+    MIN_APPEAR_DELAY: 50,        
+    MAX_APPEAR_DELAY: 200,       
+    FADE_OUT_DELAY: 700,         
+    REMOVE_DELAY: 1100,          
     ROTATION_RANGE: 15,          
-    SCALE_MIN: 1,              
-    SCALE_MAX: 1.8,              
-    OPACITY: 1,
-    SPEED_SMOOTHING: 0.3         // Плавность изменения скорости (0-1)
+    SCALE_MIN: 0.8,              
+    SCALE_MAX: 1.1,              
+    OPACITY: 0.8,
+    SPEED_SMOOTHING: 0.3
 };
+
+// 🔍 Проверка — мобильное устройство?
+const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|Opera Mini|IEMobile/i.test(navigator.userAgent);
+
+// На мобильных уменьшаем количество и размер для производительности
+if (isMobile) {
+    CONFIG.MAX_TRAILS = 6;
+    CONFIG.STICKER_SIZE = 30;
+    CONFIG.MIN_APPEAR_DELAY = 80;
+    CONFIG.MAX_APPEAR_DELAY = 250;
+    console.log('📱 Мобильный режим: уменьшенная нагрузка');
+}
 
 let trailCount = 0;
 let lastMoveTime = 0;
 let lastX = 0;
 let lastY = 0;
-let currentSpeed = 0;
 let smoothSpeed = 0;
 
-document.addEventListener('mousemove', (e) => {
-    // 📊 Вычисляем скорость движения мыши
-    const dx = e.clientX - lastX;
-    const dy = e.clientY - lastY;
-    const distance = Math.sqrt(dx * dx + dy * dy);
+// 📍 Получаем координаты (универсально для мыши и тача)
+function getCoordinates(e) {
+    if (e.touches) {
+        // Это тач-событие (телефон)
+        const touch = e.touches[0];
+        return { clientX: touch.clientX, clientY: touch.clientY };
+    }
+    // Это мышь
+    return { clientX: e.clientX, clientY: e.clientY };
+}
+
+// 🎯 Функция создания стикера
+function createSticker(clientX, clientY) {
+    // Проверка зоны .headblock
+    if (!isInHeadblock(clientX, clientY)) return;
     
-    // Обновляем текущую скорость (пикселей за миллисекунду)
     const now = Date.now();
+    
+    // Вычисляем скорость
+    const dx = clientX - lastX;
+    const dy = clientY - lastY;
+    const distance = Math.sqrt(dx * dx + dy * dy);
     const timeDelta = now - lastMoveTime;
     
     if (timeDelta > 0) {
-        currentSpeed = distance / timeDelta;
-        // Сглаживаем скорость для более плавного поведения
+        const currentSpeed = distance / timeDelta;
         smoothSpeed = smoothSpeed * CONFIG.SPEED_SMOOTHING + currentSpeed * (1 - CONFIG.SPEED_SMOOTHING);
     }
     
-    lastX = e.clientX;
-    lastY = e.clientY;
+    lastX = clientX;
+    lastY = clientY;
     
-    // ⛔ Проверка зоны .headblock
-    if (!isInHeadblock(e.clientX, e.clientY)) {
-        lastMoveTime = now;
-        return;
-    }
-    
-    // 🎯 Динамическая задержка в зависимости от скорости
-    // Чем выше скорость → тем меньше задержка
-    const speedFactor = Math.min(smoothSpeed / 2, 1); // нормализуем скорость (0-1)
+    // Динамическая задержка
+    const speedFactor = Math.min(smoothSpeed / 2, 1);
     const dynamicDelay = CONFIG.MAX_APPEAR_DELAY - (CONFIG.MAX_APPEAR_DELAY - CONFIG.MIN_APPEAR_DELAY) * speedFactor;
     
-    // ⏱️ Проверяем, можно ли создать новый стикер
     if (now - lastMoveTime < dynamicDelay) return;
     lastMoveTime = now;
     
-    // Выбираем случайный стикер
+    // Создаём стикер
     const randomIndex = Math.floor(Math.random() * loadedImages.length);
     const selectedImage = loadedImages[randomIndex];
     
-    // Создаём стикер
     const trail = document.createElement('img');
     trail.src = selectedImage.src;
     
     const size = CONFIG.STICKER_SIZE + (Math.random() * 10 - 5);
     const rotation = (Math.random() - 0.5) * CONFIG.ROTATION_RANGE * 2;
     const scale = CONFIG.SCALE_MIN + Math.random() * (CONFIG.SCALE_MAX - CONFIG.SCALE_MIN);
-    
-    // ✨ Чем быстрее движение, тем больше стикер (эффект динамики)
     const speedBoost = 1 + smoothSpeed * 0.3;
     const finalSize = size * Math.min(speedBoost, 1.5);
     
     trail.style.cssText = `
         position: fixed;
-        left: ${e.clientX - finalSize/2}px;
-        top: ${e.clientY - finalSize/2}px;
+        left: ${clientX - finalSize/2}px;
+        top: ${clientY - finalSize/2}px;
         width: ${finalSize}px;
         height: ${finalSize}px;
         pointer-events: none;
@@ -142,20 +155,17 @@ document.addEventListener('mousemove', (e) => {
     
     document.body.appendChild(trail);
     
-    // Анимация появления
     requestAnimationFrame(() => {
         trail.style.opacity = CONFIG.OPACITY;
         trail.style.transform = `scale(${scale}) rotate(${rotation}deg)`;
     });
     
-    // Удаляем с затуханием
     setTimeout(() => {
         trail.style.opacity = '0';
         trail.style.transform = `scale(${scale * 0.4}) rotate(${rotation * 1.5}deg) translateY(-20px)`;
         setTimeout(() => trail.remove(), CONFIG.REMOVE_DELAY - CONFIG.FADE_OUT_DELAY);
     }, CONFIG.FADE_OUT_DELAY);
     
-    // Ограничиваем количество стикеров
     trailCount++;
     if (trailCount > CONFIG.MAX_TRAILS) {
         const allTrails = document.querySelectorAll('img[style*="fixed"]');
@@ -167,9 +177,9 @@ document.addEventListener('mousemove', (e) => {
         }
         trailCount = CONFIG.MAX_TRAILS;
     }
-});
+}
 
-// Функция проверки зоны .headblock
+// 🔍 Проверка зоны .headblock
 function isInHeadblock(clientX, clientY) {
     const headblock = document.querySelector('.headblock');
     if (!headblock) return false;
@@ -178,5 +188,30 @@ function isInHeadblock(clientX, clientY) {
     return clientY >= rect.top && clientY <= rect.bottom;
 }
 
-console.log('✅ Динамические стикеры загружены!');
-console.log('📐 Скорость влияет на частоту появления');
+// 🖥️ Событие для мыши (ПК)
+document.addEventListener('mousemove', (e) => {
+    const coords = getCoordinates(e);
+    createSticker(coords.clientX, coords.clientY);
+});
+
+// 📱 Событие для тача (телефон)
+document.addEventListener('touchmove', (e) => {
+    // Предотвращаем скролл только внутри .headblock
+    const touch = e.touches[0];
+    if (isInHeadblock(touch.clientX, touch.clientY)) {
+        e.preventDefault(); // Останавливаем скролл, чтобы стикеры не мешали
+    }
+    const coords = getCoordinates(e);
+    createSticker(coords.clientX, coords.clientY);
+}, { passive: false }); // passive: false нужно для preventDefault
+
+// 📱 Начало касания
+document.addEventListener('touchstart', (e) => {
+    const coords = getCoordinates(e);
+    lastX = coords.clientX;
+    lastY = coords.clientY;
+    lastMoveTime = Date.now();
+});
+
+console.log('✅ Стикеры загружены!');
+console.log(`📱 Мобильный режим: ${isMobile ? 'ВКЛЮЧЕН' : 'ВЫКЛЮЧЕН'}`);
