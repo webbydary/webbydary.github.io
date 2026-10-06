@@ -7,7 +7,7 @@
 
 /* VARIABLES */
 :root {
-  color-scheme: light;
+  color-scheme: light only;
 
   --bg-primary: #FAFAFA;
   --bg-secondary: #FFFFFF;
