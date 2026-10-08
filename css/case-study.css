@@ -11,17 +11,17 @@
 }
 
 @media (max-width: 1439px) {
-  .case-longread {
-    margin-top: 40px;
-    gap: 40px;
-  }
+    .case-longread {
+        margin-top: 40px;
+        gap: 40px;
+    }
 }
 
 @media (max-width: 767px) {
-  .case-longread {
-    width: calc(100% - 16px);
-    max-width: none;
-  }
+    .case-longread {
+        width: calc(100% - 16px);
+        max-width: none;
+    }
 }
 
 .case-longread__intro {
@@ -65,13 +65,13 @@
 }
 
 @media (max-width: 767px) {
-  .case-longread__meta {
-    margin-bottom: 12px;
-  }
+    .case-longread__meta {
+        margin-bottom: 12px;
+    }
 
-  .case-longread__title {
-    margin-bottom: 16px;
-  }
+    .case-longread__title {
+        margin-bottom: 16px;
+    }
 }
 
 /* longread block */
@@ -165,13 +165,14 @@
 }
 
 @media (max-width: 767px) {
-  .case-longread__intro,
-  .longread-block__title,
-  .main-text,
-  .point-text {
-    margin-left: 8px;
-    margin-right: 8px;
-  }
+
+    .case-longread__intro,
+    .longread-block__title,
+    .main-text,
+    .point-text {
+        margin-left: 8px;
+        margin-right: 8px;
+    }
 }
 
 @media (max-width: 767px) {
@@ -192,19 +193,19 @@
 
     /* LIST SPACING */
 
-    .main-text li + li {
+    .main-text li+li {
         margin-top: 8px;
     }
 
 
     /* PARAGRAPH SPACING */
 
-    .main-text p + p {
+    .main-text p+p {
         margin-top: 12px;
     }
 
-    .main-text p + ul,
-    .main-text p + ol {
+    .main-text p+ul,
+    .main-text p+ol {
         margin-top: 12px;
     }
 
@@ -218,8 +219,20 @@
     display: block;
     width: 100%;
     height: auto;
+    border-radius: var(--radius-image-desktop);
 }
 
+.case-longread__image picture {
+  display: block;
+}
+
+@media (max-width: 767px) {
+
+    .case-longread__image {
+        border-radius: var(--radius-image-mobile);
+    }
+
+}
 
 /* GROUP */
 
@@ -227,14 +240,24 @@
     display: grid;
     width: 100%;
     gap: 20px;
+    border-radius: var(--radius-image-desktop);
 }
 
 .case-longread__media img {
     display: block;
     width: 100%;
     height: auto;
+    border-radius: var(--radius-image-desktop);
 }
 
+@media (max-width: 767px) {
+
+    .case-longread__media,
+    .case-longread__media img {
+        border-radius: var(--radius-image-mobile);
+    }
+
+}
 
 /* TWO IMAGES */
 
@@ -266,6 +289,7 @@
 }
 
 @media (max-width: 1439px) {
+
     .case-longread__media,
     .case-longread__media--featured,
     .case-longread__media-row {

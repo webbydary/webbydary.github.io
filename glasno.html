@@ -7,13 +7,13 @@
     <meta name="description" content="Портфолио продуктового дизайнера">
     <title>Ефимова Дарья ✦ Продуктовый дизайнер</title>
     <link rel="stylesheet" href="./css/styles.css">
+    <link rel="stylesheet" href="css/case-study.css">
     <meta name="color-scheme" content="light">
     <meta name="theme-color" content="#FAFAFA">
 </head>
 
 <body>
     <canvas id="cursor-canvas" class="cursor-canvas" aria-hidden="true"></canvas>
-    <!-- HEADER -->
     <header class="header">
 
         <!-- DESKTOP -->
@@ -115,7 +115,7 @@
 
     <!-- MAIN -->
     <main>
-        
+
         <!-- HERO -->
         <section class="hero">
             <div class="container">
@@ -123,6 +123,254 @@
             </div>
         </section>
 
+        <!-- LONGREAD -->
+        <section class="case-longread">
+
+            <!-- CASE INTRO -->
+            <div class="case-longread__intro">
+
+                <p class="case-longread__meta">
+                    B2B · LegalTech · Web
+                </p>
+
+                <h1 class="case-longread__title">
+                    Маршрут согласования
+                </h1>
+
+                <p class="case-longread__description">
+                    Гласно - стартап юридической платформы. На первом этапе команда делала MVP для юридических компаний
+                    и хотела перенести в продукт часть ежедневных процессов юриста.
+                </p>
+
+                <p class="case-longread__description">
+                    В команде был основной дизайнер, который уже собрал базовый интерфейс и UI-Kit продукта.
+                </p>
+
+            </div>
+
+            <!-- блок текста -->
+            <div class="longread-block">
+
+                <h2 class="longread-block__title">
+                    Задача
+                </h2>
+
+                <div class="main-text">
+                    <p>
+                        Я подключилась как продуктовый дизайнер на part-time и получила отдельный функциональный блок —
+                        маршрут согласований.
+                    </p>
+
+                    <p>
+                        Необходимо было разобраться, как работает процесс согласования, оцифровать его и спроектировать
+                        все необходимые сценарии.
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- картинка -->
+            <img class="case-longread__image" src="images/glasno/shot.png" alt="">
+
+            <!-- блок с буллитами -->
+            <div class="longread-block">
+
+                <h2 class="longread-block__title">
+                    Сбор информации
+                </h2>
+                <div class="main-text">
+
+                    <p>
+                        Узнавала у СЕО, практикующего юриста, из чего состоит согласования и какие действия происходят
+                        на каждом этапе.
+                    </p>
+
+                    <p>
+                        Уточняла у разработки способы хранения документов, ограничения по безопасности и что архитектура
+                        интерфейса позволяет реализовать.
+                    </p>
+
+                    <p>
+                        По итогам встреч собрала флоу:
+                    </p>
+
+                    <ul>
+                        <li>работа с маршрутами, их создание и редактирование</li>
+                        <li>работа с документами, отправленными на согласование </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- картинка -->
+            <img class="case-longread__image" src="images/glasno/shot-1.png" alt="">
+
+            <!-- блок с буллитами -->
+            <div class="longread-block">
+
+                <h2 class="longread-block__title">
+                    Добавление ролей на платформе
+                </h2>
+                <div class="main-text">
+
+                    <p>
+                        При разборе сценариев с разработкой подметила проблему: редактирование созданных маршрутов могло
+                        в будущем создавать проблемы с доступностью.
+                    </p>
+
+                    <p>
+                        Предложила на начальном этапе ввести модель ролей на платформе:
+                    </p>
+
+                    <ul>
+                        <li>Администратор. Имеет полный доступ ко всем функциям на платформе</li>
+                        <li>Старший сотрудник. Создание и редактирование шаблонов маршрутов </li>
+                        <li>Сотрудники без ролей могут использовать готовые шаблоны согласований </li>
+                    </ul>
+
+                    <p>
+                        Так, при дальнейшем росте продукта, уже есть заложенная модель доступа
+                    </p>
+                </div>
+            </div>
+
+            <!-- блок текста -->
+            <div class="longread-block">
+
+                <h2 class="longread-block__title">
+                    Список согласований
+                </h2>
+
+                <div class="main-text">
+                    <p>
+                        Одна из основных задач, создание списка документов на согласование.
+                    </p>
+
+                    <p>
+                        Изначально рассматривалась версия отображения всех согласований в компании. Но это создавало
+                        проблемы с доступами и конфиденциальностью.
+                    </p>
+
+                    <p>
+                        Вариант разделения списка согласований на “Новые/Архив” не отвечал на главный вопрос
+                        пользователя: что мне тут нужно сейчас сделать?
+                    </p>
+
+                    <p>
+                        Поэтому я перестроила структуру списка вокруг состояния пользователя: ограничила список
+                        согласований только теми документами, в которых он числится как участник. Добавила возможность
+                        быстро отсортировать таблицу по группам: что требует сейчас моей подписи, что уже подписано, а
+                        что еще ожидает моего этапа.
+                    </p>
+
+                    <p>
+                        В результате список стал не просто архивом документов, а рабочим инструментом.
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- картинка -->
+            <img class="case-longread__image" src="images/glasno/shot-2.png" alt="">
+
+            <!-- блок с буллитами -->
+            <div class="longread-block">
+
+                <h2 class="longread-block__title">
+                    Итоговый результат
+                </h2>
+                <div class="main-text">
+
+                    <p>
+                        В итоге спроектировала весь функциональный блок:
+                    </p>
+
+                    <ul>
+                        <li>список согласований, страница документа </li>
+                        <li>шаблоны маршрутов, их создание и редактирование </li>
+                        <li>и все связанные с этими флоу состояния</li>
+                    </ul>
+
+                </div>
+            </div>
+
+            <!-- блок картинок -->
+            <div class="case-longread__media case-longread__media--featured">
+
+                <img src="images/glasno/shot-3.png" alt="">
+
+                <div class="case-longread__media case-longread__media--1-1">
+
+                    <picture>
+                        <source media="(max-width: 767px)" srcset="images/glasno/shot-4-mobile.png">
+                        <img src="images/glasno/shot-4.png" alt="">
+                    </picture>
+                    
+                    <picture>
+                        <source media="(max-width: 767px)" srcset="images/glasno/shot-5-mobile.png">
+                        <img src="images/glasno/shot-5.png" alt="">
+                    </picture>
+                    
+                </div>
+
+            </div>
+
+            <!-- блок текста -->
+            <div class="longread-block">
+
+                <h2 class="longread-block__title">
+                    Дизайн чата
+                </h2>
+
+                <div class="main-text">
+                    <p>
+                        Дополнительно в рамках проекта спроектировала дизайн чата внутри платформы.
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- картинка -->
+            <img class="case-longread__image" src="images/glasno/shot-6.png" alt="">
+
+            <!-- блок текста -->
+            <div class="longread-block">
+
+                <h2 class="longread-block__title">
+                    Результат
+                </h2>
+
+                <div class="main-text">
+                    <p>
+                        За полтора месяца part-time работы я прошла путь от погружения в незнакомую для меня предметную область до готового функционального блока, согласованного с бизнесом и разработкой.
+                    </p>
+
+                    <p>
+                        Макеты были переданы в разработку, после чего моя задача на проекте завершилась.
+                    </p>
+
+                    <p>
+                        Для меня этот проект важен тем, что здесь я не просто проектировала интерфейс, а смогла перевести сложный реальный процесс в цифровую механику и связывать UX с технической архитектурой продукта.
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- две одинаковые картинки -->
+            <div class="case-longread__media case-longread__media--1-1">
+                
+                <picture>
+                    <source media="(max-width: 767px)" srcset="images/glasno/shot-7-mobile.png">
+                    <img src="images/glasno/shot-7.png" alt="">
+                </picture>
+                
+                <picture>
+                    <source media="(max-width: 767px)" srcset="images/glasno/shot-8-mobile.png">
+                    <img src="images/glasno/shot-8.png" alt="">
+                </picture>
+                
+            </div>
+
+        </section>
 
     </main>
 

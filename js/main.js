@@ -44,98 +44,165 @@ if (mobileMenu && mobileMenuButton) {
 
 
 
-// VELOCITY LINE CURSOR
+// CURSOR
 
 const canvas = document.querySelector('#cursor-canvas');
 
 if (canvas && window.matchMedia('(pointer: fine)').matches) {
-  const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d');
 
-  let width = 0;
-  let height = 0;
+    let mouseMoved = false;
 
-  const mouse = {
-    x: window.innerWidth / 2,
-    y: window.innerHeight / 2
-  };
+    const pointer = {
+        x: 0.5 * window.innerWidth,
+        y: 0.5 * window.innerHeight
+    };
 
-  const current = {
-    x: mouse.x,
-    y: mouse.y
-  };
+    const params = {
+        pointsNumber: 40,
+        widthFactor: 0.2,
+        spring: 0.4,
+        friction: 0.5
+    };
 
-  const history = [];
-  const maxHistory = 28;
+    const trail = new Array(params.pointsNumber);
 
-  function resizeCanvas() {
-    const dpr = window.devicePixelRatio || 1;
+    for (let i = 0; i < params.pointsNumber; i++) {
+        trail[i] = {
+            x: pointer.x,
+            y: pointer.y,
+            dx: 0,
+            dy: 0
+        };
+    }
 
-    width = window.innerWidth;
-    height = window.innerHeight;
+    window.addEventListener('mousemove', (event) => {
+        mouseMoved = true;
 
-    canvas.width = width * dpr;
-    canvas.height = height * dpr;
-
-    canvas.style.width = `${width}px`;
-    canvas.style.height = `${height}px`;
-
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  }
-
-  window.addEventListener('resize', resizeCanvas);
-
-  window.addEventListener('pointermove', (event) => {
-    mouse.x = event.clientX;
-    mouse.y = event.clientY;
-  });
-
-  function render() {
-    ctx.clearRect(0, 0, width, height);
-
-    // Плавно догоняем курсор
-    current.x += (mouse.x - current.x) * 0.14;
-    current.y += (mouse.y - current.y) * 0.14;
-
-    history.unshift({
-      x: current.x,
-      y: current.y
+        pointer.x = event.clientX;
+        pointer.y = event.clientY;
     });
 
-    if (history.length > maxHistory) {
-      history.pop();
+    function setupCanvas() {
+        const dpr = window.devicePixelRatio || 1;
+
+        canvas.width = window.innerWidth * dpr;
+        canvas.height = window.innerHeight * dpr;
+
+        canvas.style.width = `${window.innerWidth}px`;
+        canvas.style.height = `${window.innerHeight}px`;
+
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
 
-    if (history.length > 1) {
-      ctx.beginPath();
+    function update(t) {
 
-      ctx.moveTo(history[0].x, history[0].y);
+        // Небольшое движение курсора до первого движения мыши
+        if (!mouseMoved) {
+            pointer.x =
+                (0.5 + 0.3 * Math.cos(0.002 * t) * Math.sin(0.005 * t))
+                * window.innerWidth;
 
-      for (let i = 1; i < history.length - 1; i++) {
-        const point = history[i];
-        const nextPoint = history[i + 1];
+            pointer.y =
+                (0.5 + 0.2 * Math.cos(0.005 * t) + 0.1 * Math.cos(0.01 * t))
+                * window.innerHeight;
+        }
 
-        const centerX = (point.x + nextPoint.x) / 2;
-        const centerY = (point.y + nextPoint.y) / 2;
-
-        ctx.quadraticCurveTo(
-          point.x,
-          point.y,
-          centerX,
-          centerY
+        ctx.clearRect(
+            0,
+            0,
+            window.innerWidth,
+            window.innerHeight
         );
-      }
 
-      ctx.strokeStyle = 'rgba(217, 255, 146)';
-      ctx.lineWidth = 2;
-      ctx.lineCap = 'round';
-      ctx.lineJoin = 'round';
+        // Движение каждой точки за предыдущей
+        trail.forEach((point, index) => {
+            const previous =
+                index === 0
+                    ? pointer
+                    : trail[index - 1];
 
-      ctx.stroke();
+            const spring =
+                index === 0
+                    ? 0.4 * params.spring
+                    : params.spring;
+
+            point.dx += (previous.x - point.x) * spring;
+            point.dy += (previous.y - point.y) * spring;
+
+            point.dx *= params.friction;
+            point.dy *= params.friction;
+
+            point.x += point.dx;
+            point.y += point.dy;
+        });
+
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            trail[0].x,
+            trail[0].y
+        );
+
+        for (let i = 1; i < trail.length - 1; i++) {
+            const currentPoint = trail[i];
+            const nextPoint = trail[i + 1];
+
+            const centerX =
+                0.5 * (currentPoint.x + nextPoint.x);
+
+            const centerY =
+                0.5 * (currentPoint.y + nextPoint.y);
+
+            ctx.quadraticCurveTo(
+                currentPoint.x,
+                currentPoint.y,
+                centerX,
+                centerY
+            );
+
+            // Линия постепенно становится тоньше
+            ctx.lineWidth =
+                params.widthFactor *
+                (params.pointsNumber - i);
+
+            ctx.strokeStyle = 'rgba(205, 205, 255, 1)';
+
+            ctx.stroke();
+        }
+
+        ctx.lineTo(
+            trail[trail.length - 1].x,
+            trail[trail.length - 1].y
+        );
+
+        ctx.stroke();
+
+        requestAnimationFrame(update);
     }
 
-    requestAnimationFrame(render);
-  }
+    setupCanvas();
+    window.addEventListener('resize', setupCanvas);
 
-  resizeCanvas();
-  render();
+    update(0);
+}
+
+
+
+
+
+const hero = document.querySelector('.hero__placeholder');
+
+if (hero) {
+  const updateHeroScale = () => {
+    const scale = Math.min(hero.clientWidth / 390, 1);
+    hero.style.setProperty('--hero-mobile-scale', scale);
+  };
+
+  updateHeroScale();
+
+  window.addEventListener('resize', updateHeroScale);
 }
