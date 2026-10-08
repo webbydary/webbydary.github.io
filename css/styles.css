@@ -704,6 +704,8 @@ body {
   gap: 16px;
 
   text-align: center;
+
+  pointer-events: none;
 }
 
 .hero-text__title {

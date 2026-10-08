@@ -190,19 +190,3 @@ if (canvas && window.matchMedia('(pointer: fine)').matches) {
     update(0);
 }
 
-
-
-
-
-const hero = document.querySelector('.hero__placeholder');
-
-if (hero) {
-  const updateHeroScale = () => {
-    const scale = Math.min(hero.clientWidth / 390, 1);
-    hero.style.setProperty('--hero-mobile-scale', scale);
-  };
-
-  updateHeroScale();
-
-  window.addEventListener('resize', updateHeroScale);
-}
