@@ -2,7 +2,7 @@
     width: 1400px;
     max-width: calc(100% - 40px);
     margin-inline: auto;
-    margin-top: 60px;
+    margin-top: 120px;
 
     display: flex;
     flex-direction: column;
@@ -57,7 +57,7 @@
 }
 
 .case-longread__description {
-    color: var(--text-primary);
+    color: var(--text-longread);
 
     font-size: var(--text-body-size);
     line-height: var(--text-body-line);
@@ -96,7 +96,7 @@
 
 /* just text */
 .main-text {
-    color: var(--text-primary);
+    color: var(--text-longread);
 
     font-size: var(--text-body-size);
     line-height: var(--text-body-line);
@@ -151,7 +151,8 @@
 }
 
 .main-text p+ul,
-.main-text p+ol {
+.main-text p+ol,
+.main-text ul+p {
     margin-top: 20px;
 }
 
@@ -205,7 +206,8 @@
     }
 
     .main-text p+ul,
-    .main-text p+ol {
+    .main-text p+ol,
+    .main-text ul+p {
         margin-top: 12px;
     }
 
@@ -325,7 +327,7 @@
     padding: 32px;
 
     background-color: var(--bg-tetriary);
-    border-radius: 20px;
+    border-radius: var(--radius-image-desktop);
 
     display: flex;
     flex-direction: column;
@@ -376,7 +378,7 @@
 }
 
 .bullit-item-card__text {
-    color: var(--text-primary);
+    color: var(--text-longread);
 
     font-size: var(--text-body-size);
     line-height: var(--text-body-line);
@@ -427,10 +429,12 @@
    MOBILE
    ========================= */
 
+
 @media (max-width: 767px) {
     .longread-card {
         padding: 20px;
         gap: 16px;
+        border-radius: var(--radius-image-mobile)
     }
 
     .bullit-item-card,
