@@ -10,162 +10,17 @@ const lenis = new Lenis({
 });
 
 
-/* SVG PAGE TRANSITIONS */
-
-(() => {
-  const overlay = document.querySelector(".page-transition");
-  const path = document.querySelector(".page-transition__path");
-
-  if (!overlay || !path || typeof gsap === "undefined") return;
-
-  const reducedMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)"
-  ).matches;
-
-  if (reducedMotion) return;
-
-  const paths = {
-    // Волна начинает появляться слева
-    enterStart:
-      "M 0 0 H 0 C 0 50 0 50 0 100 H 0 V 0 Z",
-
-    enterMiddle:
-      "M 0 0 H 43 C -17 55 183 65 43 100 H 0 V 0 Z",
-
-    // Полное закрытие экрана перед переходом
-    coveredEnter:
-      "M 0 0 H 100 C 100 50 100 50 100 100 H 0 V 0 Z",
-
-    // Полное закрытие экрана перед открытием новой страницы
-    coveredExit:
-      "M 100 0 H 0 C 0 50 0 50 0 100 H 100 V 0 Z",
-
-    // Волна уходит за правый край
-    exitMiddle:
-      "M 100 0 H 50 C 78 43 54 81 50 100 H 100 V 0 Z",
-
-    exitEnd:
-      "M 100 0 H 100 C 100 50 100 50 100 100 H 100 V 0 Z"
-  };
-
-  let isAnimating = false;
-
-  const showOverlay = () => {
-    overlay.style.visibility = "visible";
-  };
-
-  const hideOverlay = () => {
-    overlay.style.visibility = "hidden";
-  };
-
-  const transitionKey = "portfolio-page-transition";
-
-  // Открытие новой страницы: волна уходит вправо
-  const shouldReveal = sessionStorage.getItem(transitionKey);
-
-  if (shouldReveal) {
-    sessionStorage.removeItem(transitionKey);
-
-    showOverlay();
-
-    gsap.set(path, {
-      attr: { d: paths.coveredExit }
-    });
-
-    gsap.timeline({
-      onComplete: () => {
-        hideOverlay();
-        isAnimating = false;
-      }
-    })
-      .to(path, {
-        duration: 0.25,
-        attr: { d: paths.exitMiddle },
-        ease: "power1.out"
-      })
-      .to(path, {
-        duration: 0.6,
-        attr: { d: paths.exitEnd },
-        ease: "power2.inOut"
-      });
-  }
-
-  // Закрытие текущей страницы перед переходом
-  const navigateWithTransition = (url) => {
-    if (isAnimating) return;
-
-    isAnimating = true;
-    showOverlay();
-
-    gsap.set(path, {
-      attr: { d: paths.enterStart }
-    });
-
-    gsap.timeline({
-      onComplete: () => {
-        sessionStorage.setItem(transitionKey, "1");
-        window.location.href = url;
-      }
-    })
-      .to(path, {
-        duration: 0.6,
-        attr: { d: paths.enterMiddle },
-        ease: "power2.inOut"
-      })
-      .to(path, {
-        duration: 0.2,
-        attr: { d: paths.coveredEnter },
-        ease: "power1.in"
-      });
-  };
-
-  // Перехватываем внутренние ссылки сайта
-  document.addEventListener("click", (event) => {
-    const link = event.target.closest("a");
-
-    if (!link) return;
-    if (event.defaultPrevented) return;
-    if (event.button !== 0) return;
-
-    if (
-      event.metaKey ||
-      event.ctrlKey ||
-      event.shiftKey ||
-      event.altKey
-    ) {
-      return;
-    }
-
-    if (link.target && link.target !== "_self") return;
-    if (link.hasAttribute("download")) return;
-
-    const url = new URL(link.href, window.location.href);
-
-    // Не анимируем внешние ссылки
-    if (url.origin !== window.location.origin) return;
-
-    // Не анимируем переход к якорю на той же странице
-    if (
-      url.pathname === window.location.pathname &&
-      url.search === window.location.search &&
-      url.hash
-    ) {
-      return;
-    }
-
-    // Не анимируем ссылку на текущую страницу
-    if (url.href === window.location.href) return;
-
-    event.preventDefault();
-    navigateWithTransition(url.href);
-  });
-})();
 
 
 
 
 
 
+
+
+
+
+// Клик в меню
 const currentPage = window.location.pathname;
 
 const menuLinks = document.querySelectorAll(".menu-button");

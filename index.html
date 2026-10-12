@@ -14,10 +14,7 @@
 
 <body>
   <canvas id="cursor-canvas" class="cursor-canvas" aria-hidden="true"></canvas>
-  <!-- SVG PAGE TRANSITION -->
-  <svg class="page-transition" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-    <path class="page-transition__path" d="M 0 0 h 0 c 0 50 0 50 0 100 H 0 V 0 Z" />
-  </svg>
+
   <!-- HEADER -->
   <header class="header">
 
@@ -128,33 +125,50 @@
   <main>
 
     <!-- HERO -->
-    <section class="hero ">
-      <div class="container">
-        <div class="hero__placeholder">
-
-          <div class="hero-graphics">
-
-            <img class="hero-line" src="images/line-desktop.svg" alt="">
-
-            <img class="hero-image hero-image--1" src="images/img-hero-01.avif" alt="">
-            <img class="hero-image hero-image--2" src="images/img-hero-02.avif" alt="">
-            <img class="hero-image hero-image--3" src="images/img-hero-03.avif" alt="">
-            <img class="hero-image hero-image--4" src="images/img-hero-04.avif" alt="">
-            <img class="hero-image hero-image--5" src="images/img-hero-05.avif" alt="">
-            <img class="hero-image hero-image--6" src="images/img-hero-06.avif" alt="">
-            <img class="hero-image hero-image--7" src="images/img-hero-07.avif" alt="">
-
+    <div class="container">
+      <section class="headblock--v2">
+    
+    
+        <div class="headblock-v2__graphic-wrapper">
+          <div class="headblock-v2__graphic" aria-hidden="true">
+    
+            <!-- Фотография позади линии -->
+            <img class="headblock-v2__photo headblock-v2__photo--05" src="images/img-hero-05.avif" alt="" />
+    
+            <!-- SVG-линия -->
+            <img class="headblock-v2__line" src="images/line-v2.svg" alt="" />
+    
+            <!-- Остальные фотографии -->
+            <img class="headblock-v2__photo headblock-v2__photo--01" src="images/img-hero-04.avif" alt="" />
+    
+            <img class="headblock-v2__photo headblock-v2__photo--02" src="images/img-hero-02.avif" alt="" />
+    
+            <img class="headblock-v2__photo headblock-v2__photo--03" src="images/img-hero-03.avif" alt="" />
+    
+            <img class="headblock-v2__photo headblock-v2__photo--04" src="images/img-hero-01.avif" alt="" />
+    
+            <img class="headblock-v2__photo headblock-v2__photo--06" src="images/img-hero-07.avif" alt="" />
+    
+            <img class="headblock-v2__photo headblock-v2__photo--07" src="images/img-hero-06.avif" alt="" />
+    
           </div>
-
-          <div class="hero-text">
-            <h1 class="hero-text__title">Ефимова Дарья</h1>
-            <h2 class="hero-text__subtitle">продуктовый дизайнер с опытом 3+ года</h2>
-            <h3 class="hero-text__tags">HRTech · EdTech · B2B · B2C · Web · Mobile</h3>
-          </div>
-
         </div>
-      </div>
-    </section>
+    
+        <div class="headblock-v2__content">
+          <h1 class="headblock-v2__title">
+            Привет! Я – Даша,<br />
+            продуктовый дизайнер
+          </h1>
+    
+          <p class="headblock-v2__description">
+            Проектирую интерфейсы для B2B и B2C продуктов.
+            3 года превращаю сложные бизнес-задачи
+            в человечный пользовательский опыт.
+          </p>
+        </div>
+      </section>
+    </div>
+
 
     <section class="cases">
       <div class="container">
