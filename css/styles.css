@@ -663,6 +663,7 @@ body {
 
   transform: scale(var(--graphic-scale));
   transform-origin: top center;
+  transition: transform 0.5s ease-in-out;
 }
 
 .headblock-v2__line {
@@ -760,31 +761,31 @@ body {
 
 @media (hover: hover) and (pointer: fine) {
   .headblock-v2__photo--01:hover {
-    transform: rotate(-6deg) scale(1.1);
+    transform: rotate(-6deg) scale(1.2);
   }
 
   .headblock-v2__photo--02:hover {
-    transform: rotate(7deg) scale(1.1);
+    transform: rotate(-7deg) scale(1.2);
   }
 
   .headblock-v2__photo--03:hover {
-    transform: rotate(-8deg) scale(1.1);
+    transform: rotate(8deg) scale(1.1);
   }
 
   .headblock-v2__photo--04:hover {
-    transform: rotate(5deg) scale(1.1);
+    transform: rotate(5deg) scale(1.2);
   }
 
   .headblock-v2__photo--05:hover {
-    transform: rotate(-6deg) scale(1.1);
+    transform: rotate(-6deg) scale(1.2);
   }
 
   .headblock-v2__photo--06:hover {
-    transform: rotate(5deg) scale(1.1);
+    transform: rotate(5deg) scale(1.2);
   }
 
   .headblock-v2__photo--07:hover {
-    transform: rotate(-7deg) scale(1.1);
+    transform: rotate(-7deg) scale(1.2);
   }
 }
 
@@ -833,11 +834,11 @@ body {
 
 @media (max-width: 1024px) {
   .headblock--v2 {
-    height: 600px;
+    height: 620px;
   }
 
   .headblock-v2__graphic-wrapper {
-    top: 40px;
+    top: 20px;
   }
 
   .headblock-v2__graphic {
@@ -852,7 +853,7 @@ body {
 
 @media (max-width: 767px) {
   .headblock--v2 {
-    height: 500px;
+    height: 520px;
     border-radius: 8px;
   }
 
@@ -861,7 +862,7 @@ body {
   }
 
   .headblock-v2__graphic-wrapper {
-    top: 20px;
+    top: 12px;
   }
 
   .headblock-v2__content {
